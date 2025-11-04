@@ -17,6 +17,7 @@ public class Stock {
     private Integer stockId;
     private byte[] stockPhoto;
     private String stockName;
+    @Column(unique = true)
     private String stockSymbol;
     private Boolean enable;
 

@@ -2,7 +2,7 @@ package br.com.ifsp.StockApp.model;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record StockDataCreation (
+public record StockDataCreation(
     byte[] stockPhoto,
     @NotBlank String stockName,
     @NotBlank String stockSymbol

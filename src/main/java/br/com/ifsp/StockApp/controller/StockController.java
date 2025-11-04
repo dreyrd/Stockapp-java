@@ -20,7 +20,6 @@ public class StockController {
         Stock newStock = new Stock(stockDataCreation);
         this.stockList.add(newStock);
 
-        response.put("Id", newStock.getStockId().toString());
         response.put("Name", newStock.getStockName());
         response.put("Symbol", newStock.getStockSymbol());
         return response;
@@ -29,7 +28,14 @@ public class StockController {
     @GetMapping
     public Map<String, String> getStock(){
         Map<String, String> response = new HashMap<>();
-        stockList.forEach(stock -> response.put(stock.getStockId().toString(), stock.getStockName()));
+        stockList.forEach(stock -> response.put(stock.getStockName(), stock.getStockSymbol()));
+        return response;
+    }
+
+    @GetMapping("/{stockId}")
+    public Map<String, String> getStockById(@PathVariable Integer stockId){
+        Map<String, String> response = new HashMap<>();
+        response.put(stockList.get(stockId).getStockName(), stockList.get(stockId).getStockSymbol());
         return response;
     }
 }
