@@ -1,4 +1,4 @@
-package br.com.ifsp.StockApp.model;
+package br.com.ifsp.StockApp.model.stock;
 
 import jakarta.validation.constraints.NotBlank;
 

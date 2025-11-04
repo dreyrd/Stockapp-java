@@ -1,4 +1,4 @@
-package br.com.ifsp.StockApp.model;
+package br.com.ifsp.StockApp.model.stock;
 
 
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+//@EqualsAndHashCode
 @Entity(name = "Stock")
 @Table(name = "stocks")
 public class Stock {

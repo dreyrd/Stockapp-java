@@ -1,7 +1,7 @@
 package br.com.ifsp.StockApp.controller;
 
-import br.com.ifsp.StockApp.model.Stock;
-import br.com.ifsp.StockApp.model.StockDataCreation;
+import br.com.ifsp.StockApp.model.stock.Stock;
+import br.com.ifsp.StockApp.model.stock.StockDataCreation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
