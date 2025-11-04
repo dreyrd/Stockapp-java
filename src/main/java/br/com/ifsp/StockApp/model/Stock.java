@@ -1,6 +1,7 @@
 package br.com.ifsp.StockApp.model;
 
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -8,5 +9,21 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Entity(name = "Stock")
+@Table(name = "stocks")
 public class Stock {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer stockId;
+    private byte[] stockPhoto;
+    private String stockName;
+    private String stockSymbol;
+    private Boolean enable;
+
+    public Stock(StockDataCreation stockDataCreation){
+        this.stockPhoto = stockDataCreation.stockPhoto();
+        this.stockName = stockDataCreation.stockName();
+        this.stockSymbol = stockDataCreation.stockSymbol();
+        this.enable = true;
+    }
 }
