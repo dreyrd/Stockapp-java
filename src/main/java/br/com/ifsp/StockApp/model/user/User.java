@@ -18,11 +18,13 @@ public class User {
     private byte[] userPhoto;
     private String email;
     private String password;
+    private Boolean enable;
 
     public User(UserDataCreation userDataCreation){
         this.name = userDataCreation.name();
         this.userPhoto = userDataCreation.userPhoto();
         this.email = userDataCreation.email();
         this.password = userDataCreation.password();
+        this.enable = true;
     }
 }

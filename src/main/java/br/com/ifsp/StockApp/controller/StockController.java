@@ -28,7 +28,7 @@ public class StockController {
 
     @GetMapping
     public ResponseEntity<Page<StockDataResponse>> getStock(Pageable pageable){
-        var page = repository.findAll(pageable).map(StockDataResponse::new);
+        var page = repository.findAllByEnableTrue(pageable).map(StockDataResponse::new);
         return ResponseEntity.ok(page);
     }
 

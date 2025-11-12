@@ -10,6 +10,7 @@ create table stocks (
 create table user (
     user_id integer not null auto_increment,
     email varchar(255),
+    enable bit,
     name varchar(255),
     password varchar(255),
     user_photo varbinary(255),
