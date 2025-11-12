@@ -2,40 +2,39 @@ package br.com.ifsp.StockApp.controller;
 
 import br.com.ifsp.StockApp.model.stock.Stock;
 import br.com.ifsp.StockApp.model.stock.StockDataCreation;
+import br.com.ifsp.StockApp.model.stock.StockDataResponse;
+import br.com.ifsp.StockApp.model.stock.StockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/stocks")
 public class StockController {
-    List<Stock> stockList = new ArrayList<>();
+    @Autowired
+    StockRepository repository;
 
     @PostMapping
-    public Map<String, String> postStock(@RequestBody StockDataCreation stockDataCreation){
-        Map<String, String> response = new HashMap<>();
-        Stock newStock = new Stock(stockDataCreation);
-        this.stockList.add(newStock);
-
-        response.put("Name", newStock.getStockName());
-        response.put("Symbol", newStock.getStockSymbol());
-        return response;
+    public ResponseEntity<StockDataResponse> postStock(@RequestBody StockDataCreation stockDataCreation, UriComponentsBuilder uriComponentsBuilder){
+        var newStock = new Stock(stockDataCreation);
+        repository.save(newStock);
+        var uri = uriComponentsBuilder.path("/stocks/{stockId}").buildAndExpand(newStock.getStockId()).toUri();
+        return ResponseEntity.created(uri).body(new StockDataResponse(newStock));
     }
 
     @GetMapping
-    public Map<String, String> getStock(){
-        Map<String, String> response = new HashMap<>();
-        stockList.forEach(stock -> response.put(stock.getStockName(), stock.getStockSymbol()));
-        return response;
+    public ResponseEntity<Page<StockDataResponse>> getStock(Pageable pageable){
+        var page = repository.findAll(pageable).map(StockDataResponse::new);
+        return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{stockId}")
-    public Map<String, String> getStockById(@PathVariable Integer stockId){
-        Map<String, String> response = new HashMap<>();
-        response.put(stockList.get(stockId).getStockName(), stockList.get(stockId).getStockSymbol());
-        return response;
+    public ResponseEntity<StockDataResponse> getStockById(@PathVariable Integer stockId){
+        var stock = repository.getReferenceById(stockId);
+        return ResponseEntity.ok(new StockDataResponse(stock));
     }
 }
