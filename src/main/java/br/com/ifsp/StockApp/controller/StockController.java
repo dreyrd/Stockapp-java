@@ -43,4 +43,7 @@ public class StockController {
         var stock = repository.getReferenceByStockSymbol(stockSymbol);
         return ResponseEntity.ok(new StockDataResponse(stock));
     }
+
+//    @PostMapping("/symbol/{stockSymbol}/predict")
+//    public ResponseEntity<StockDataResponse> postStockPredict(@RequestBody )
 }
