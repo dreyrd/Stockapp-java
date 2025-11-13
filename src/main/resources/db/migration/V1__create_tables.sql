@@ -3,11 +3,11 @@ create table stocks (
     enable bit,
     stock_name varchar(255),
     stock_photo varbinary(255),
-    stock_symbol varchar(255),
+    stock_symbol varchar(255) UNIQUE,
     primary key (stock_id)
 );
 
-create table user (
+create table users (
     user_id integer not null auto_increment,
     email varchar(255),
     enable bit,

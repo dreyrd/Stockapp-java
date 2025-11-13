@@ -37,4 +37,10 @@ public class StockController {
         var stock = repository.getReferenceById(stockId);
         return ResponseEntity.ok(new StockDataResponse(stock));
     }
+
+    @GetMapping("/symbol/{stockSymbol}")
+    public ResponseEntity<StockDataResponse> getStockBySymbol(@PathVariable String stockSymbol){
+        var stock = repository.getReferenceByStockSymbol(stockSymbol);
+        return ResponseEntity.ok(new StockDataResponse(stock));
+    }
 }
