@@ -1,6 +1,6 @@
 package br.com.ifsp.StockApp.model.predict;
 
-public record StockPrediction(
+public record StockPredictionDataApi(
     Float h,
     Float l
 ) { }
