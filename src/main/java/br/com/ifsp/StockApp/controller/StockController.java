@@ -1,15 +1,19 @@
 package br.com.ifsp.StockApp.controller;
 
+import br.com.ifsp.StockApp.model.predict.*;
 import br.com.ifsp.StockApp.model.stock.Stock;
 import br.com.ifsp.StockApp.model.stock.StockDataCreation;
 import br.com.ifsp.StockApp.model.stock.StockDataResponse;
 import br.com.ifsp.StockApp.model.stock.StockRepository;
+import br.com.ifsp.StockApp.service.StockPredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
 
 
 @RestController
@@ -43,4 +47,24 @@ public class StockController {
         var stock = repository.getReferenceByStockSymbol(stockSymbol);
         return ResponseEntity.ok(new StockDataResponse(stock));
     }
+
+    @PostMapping("/prediction")
+    public ResponseEntity<StockPredictionDataResponse> postStockPrediction(@RequestBody PredictionRequestDataCreation predictionRequestDataCreation) throws IOException, InterruptedException {
+        StockPredictionService stockPredictionService = new StockPredictionService();
+        PredictionRequest predictionRequest = new PredictionRequest(predictionRequestDataCreation);
+
+        StockPrediction stockPrediction = stockPredictionService.predictionByLr(predictionRequest);
+
+        return ResponseEntity.ok(new StockPredictionDataResponse(stockPrediction));
+    }
+
+//    @PostMapping("/suggestion")
+//    public ResponseEntity<StockPredictionDataResponse> postStockSuggestion(@RequestBody PredictionRequestDataCreation predictionRequestDataCreation) throws IOException, InterruptedException {
+//        StockPredictionService stockPredictionService = new StockPredictionService();
+//        PredictionRequest predictionRequest = new PredictionRequest(predictionRequestDataCreation);
+//
+//        StockPrediction stockPrediction = stockPredictionService.predictionByRf(predictionRequest);
+//
+//        return ResponseEntity.ok(new StockPredictionDataResponse(stockPrediction));
+//    }
 }
