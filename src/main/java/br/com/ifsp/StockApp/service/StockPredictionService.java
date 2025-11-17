@@ -6,6 +6,7 @@ import br.com.ifsp.StockApp.model.predict.StockPredictionDataApi;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.nio.charset.StandardCharsets;
 
 public class StockPredictionService {
 
@@ -20,6 +21,8 @@ public class StockPredictionService {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
+                .version(HttpClient.Version.HTTP_1_1)
+                .POST(HttpRequest.BodyPublishers(jason, StandardCharsets.UTF_8))
                 .build();
 
 
