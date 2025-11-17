@@ -3,9 +3,7 @@ package br.com.ifsp.StockApp.service;
 import br.com.ifsp.StockApp.model.predict.PredictionRequest;
 import br.com.ifsp.StockApp.model.predict.StockPrediction;
 import br.com.ifsp.StockApp.model.predict.StockPredictionDataCreation;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,16 +16,27 @@ public class StockPredictionService {
 
     private HttpClient client;
     private Gson gson;
+    private String urlBase = "http://127.0.0.1:8000/api/v1";
 
     public StockPredictionService(){
-        client = HttpClient.newHttpClient();
-        gson = new Gson();
+        this.client = HttpClient.newHttpClient();
+        this.gson = new Gson();
     }
 
-    public StockPrediction getLrPrediction(PredictionRequest predictionRequest) throws IOException, InterruptedException {
-        String url = "http://127.0.0.1:8000/api/v1/lr/prediction";
+    public StockPrediction predictionByLr(PredictionRequest predictionRequest) throws IOException, InterruptedException {
+        String urlLr = this.urlBase + "/lr/prediction";
 
-        String bodyPredictionRequest = gson.toJson(predictionRequest);
+        return makePrediction(urlLr, predictionRequest);
+    }
+
+    public StockPrediction predictionByRf(PredictionRequest predictionRequest) throws IOException, InterruptedException {
+        String urlRf = this.urlBase + "/rf/prediction";
+
+        return makePrediction(urlRf, predictionRequest);
+    }
+
+    private StockPrediction makePrediction(String url, PredictionRequest predictionRequest) throws IOException, InterruptedException {
+        String bodyPredictionRequest = this.gson.toJson(predictionRequest);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -35,10 +44,10 @@ public class StockPredictionService {
                 .POST(HttpRequest.BodyPublishers.ofString(bodyPredictionRequest, StandardCharsets.UTF_8))
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
         String body = response.body();
 
-        StockPredictionDataCreation stockPredictionDataCreation = gson.fromJson(body, StockPredictionDataCreation.class);
+        StockPredictionDataCreation stockPredictionDataCreation = this.gson.fromJson(body, StockPredictionDataCreation.class);
         StockPrediction stockPrediction = new StockPrediction(stockPredictionDataCreation);
 
         return stockPrediction;
