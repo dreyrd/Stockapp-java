@@ -1,8 +1,6 @@
 package br.com.ifsp.StockApp.controller;
 
-import br.com.ifsp.StockApp.model.predict.StockPrediction;
-import br.com.ifsp.StockApp.model.predict.StockPredictionDataCreation;
-import br.com.ifsp.StockApp.model.predict.StockPredictionDataResponse;
+import br.com.ifsp.StockApp.model.predict.*;
 import br.com.ifsp.StockApp.model.stock.Stock;
 import br.com.ifsp.StockApp.model.stock.StockDataCreation;
 import br.com.ifsp.StockApp.model.stock.StockDataResponse;
@@ -51,56 +49,59 @@ public class StockController {
     }
 
     @PostMapping("/symbol/{stockSymbol}/predict")
-    public ResponseEntity<StockPredictionDataResponse> postStockPredict(@PathVariable String stockSymbol) throws IOException, InterruptedException {
+    public ResponseEntity<StockPredictionDataResponse> postStockPredict(@PathVariable String stockSymbol, @RequestBody PredictionRequestDataCreation predictionRequestDataCreation) throws IOException, InterruptedException {
         StockPredictionService stockPredictionService = new StockPredictionService();
+        PredictionRequest predictionRequest = new PredictionRequest(predictionRequestDataCreation);
 
-        StockPrediction stockPrediction = stockPredictionService.getLrPrediction("""
-                {
-                  "ticker": "AAPL",
-                  "history": [
-                    {
-                      "date": "2024-12-24",
-                      "o": 3156.26,
-                      "h": 3158.87,
-                      "l": 3134.86,
-                      "c": 3143.47,
-                      "v": 9312404
-                    },
-                    {
-                      "date": "2024-12-25",
-                      "o": 3121.51,
-                      "h": 3127.26,
-                      "l": 3090.66,
-                      "c": 3119.28,
-                      "v": 9312404
-                    },
-                    {
-                      "date": "2024-12-26",
-                      "o": 3051.51,
-                      "h": 3060.58,
-                      "l": 3046.52,
-                      "c": 3053.21,
-                      "v": 9312404
-                    },
-                    {
-                      "date": "2024-12-27",
-                      "o": 3090.67,
-                      "h": 3102.42,
-                      "l": 3072.04,
-                      "c": 3089.04,
-                      "v": 9312404
-                    },
-                    {
-                      "date": "2024-12-30",
-                      "o": 3089.39,
-                      "h": 3109.88,
-                      "l": 3081.74,
-                      "c": 3094.18,
-                      "v": 9312404
-                    }
-                  ]
-                }
-                """);
+        StockPrediction stockPrediction = stockPredictionService.getLrPrediction(predictionRequest);
+
+//        StockPrediction stockPrediction = stockPredictionService.getLrPrediction("""
+//                {
+//                  "ticker": "AAPL",
+//                  "history": [
+//                    {
+//                      "date": "2024-12-24",
+//                      "o": 3156.26,
+//                      "h": 3158.87,
+//                      "l": 3134.86,
+//                      "c": 3143.47,
+//                      "v": 9312404
+//                    },
+//                    {
+//                      "date": "2024-12-25",
+//                      "o": 3121.51,
+//                      "h": 3127.26,
+//                      "l": 3090.66,
+//                      "c": 3119.28,
+//                      "v": 9312404
+//                    },
+//                    {
+//                      "date": "2024-12-26",
+//                      "o": 3051.51,
+//                      "h": 3060.58,
+//                      "l": 3046.52,
+//                      "c": 3053.21,
+//                      "v": 9312404
+//                    },
+//                    {
+//                      "date": "2024-12-27",
+//                      "o": 3090.67,
+//                      "h": 3102.42,
+//                      "l": 3072.04,
+//                      "c": 3089.04,
+//                      "v": 9312404
+//                    },
+//                    {
+//                      "date": "2024-12-30",
+//                      "o": 3089.39,
+//                      "h": 3109.88,
+//                      "l": 3081.74,
+//                      "c": 3094.18,
+//                      "v": 9312404
+//                    }
+//                  ]
+//                }
+//                """);
 
         return ResponseEntity.ok(new StockPredictionDataResponse(stockPrediction));
     }
