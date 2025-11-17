@@ -48,8 +48,8 @@ public class StockController {
         return ResponseEntity.ok(new StockDataResponse(stock));
     }
 
-    @PostMapping("/symbol/{stockSymbol}/predict")
-    public ResponseEntity<StockPredictionDataResponse> postStockPredict(@PathVariable String stockSymbol, @RequestBody PredictionRequestDataCreation predictionRequestDataCreation) throws IOException, InterruptedException {
+    @PostMapping("/prediction")
+    public ResponseEntity<StockPredictionDataResponse> postStockPrediction(@RequestBody PredictionRequestDataCreation predictionRequestDataCreation) throws IOException, InterruptedException {
         StockPredictionService stockPredictionService = new StockPredictionService();
         PredictionRequest predictionRequest = new PredictionRequest(predictionRequestDataCreation);
 
@@ -57,4 +57,14 @@ public class StockController {
 
         return ResponseEntity.ok(new StockPredictionDataResponse(stockPrediction));
     }
+
+//    @PostMapping("/suggestion")
+//    public ResponseEntity<StockPredictionDataResponse> postStockSuggestion(@RequestBody PredictionRequestDataCreation predictionRequestDataCreation) throws IOException, InterruptedException {
+//        StockPredictionService stockPredictionService = new StockPredictionService();
+//        PredictionRequest predictionRequest = new PredictionRequest(predictionRequestDataCreation);
+//
+//        StockPrediction stockPrediction = stockPredictionService.predictionByRf(predictionRequest);
+//
+//        return ResponseEntity.ok(new StockPredictionDataResponse(stockPrediction));
+//    }
 }
